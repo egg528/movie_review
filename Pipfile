@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+black = "*"
+
+[packages]
+django = "==2.2.5"
+mysqlclient = {path = "C:/Users/KWON/Downloads/mysqlclient-1.4.6-cp38-cp38-win32.whl"}
+pillow = "*"
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
