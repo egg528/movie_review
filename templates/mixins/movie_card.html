@@ -1,0 +1,14 @@
+<div class="w-1/4 mb-10 px-2 overflow-hidden">
+    <a href="{% url 'movies:movie-detail' movie.pk %}">
+    <div class="ml-12 w-3/5 h-80 bg-cover bg-center rounded-lg mb-2 " style="background-image: url({{movie.poster}});"></div>
+    <div class="ml-12 flex justify-between truncate">
+        <div class="w-4/5 overflow-hidden flex">
+
+            <span class="font-bold font-black text-sm text-gray-600 block truncate">{{movie.title}} ({{movie.year}})</span>
+        </div>
+    </div>
+    <span class="ml-12 text-sm font">
+        <i class="fas fa-star text-red-500 text-xs mr-1"></i> {{movie.rating}}
+    </span>
+    </a>
+</div>
