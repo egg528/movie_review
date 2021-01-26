@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto pb-10 mt-10">
+    <div class="flex flex-wrap justify-items-center mb-10">
+    {% if movie_name == "" %}
+            <span class=" font-bold text-3xl">Please Search Something</span>
+    {% elif movie_search %}    
+        {% for movie in movie_search %}
+            {% include 'mixins/movie_card.html' %}
+        {% endfor %}
+    {% else %}    
+        <span class=" font-bold text-3xl">Not Found ({{movie_name}})</span>
+    {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,10 +1,13 @@
 import os
 import requests
 from django.shortcuts import render, reverse, redirect
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView, FormView, UpdateView
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse_lazy
 from django.contrib import messages
-from . import models, forms
+from django.contrib.messages.views import SuccessMessageMixin
+from . import models, forms, mixins
 
 
 class SignUpView(FormView):
@@ -167,7 +170,6 @@ def kakao_callback(request):
                 username=email,
                 last_name=nickname,
                 login_method=models.User.LOGIN_KAKAO,
-                email_verified=True,
             )
             user.set_unusable_password()
             user.save()
@@ -187,3 +189,52 @@ class ProfileView(DetailView):
     model = models.User
     template_name = "users/user_detail.html"
     context_object_name = "user_obj"
+
+
+class UpdateProfileView(
+    mixins.LoggedInOnlyView,
+    SuccessMessageMixin,
+    UpdateView,
+):
+
+    model = models.User
+    template_name = "users/update-profile.html"
+    fields = (
+        "first_name",
+        "last_name",
+    )
+
+    success_message = "Profile Updated"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
+        form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
+        return form
+
+
+class UpdatePasswordView(
+    mixins.EmailLoginOnlyView,
+    mixins.LoggedInOnlyView,
+    SuccessMessageMixin,
+    PasswordChangeView,
+):
+
+    template_name = "users/update-password.html"
+    success_message = "Password Updated"
+    success_url = reverse_lazy("core:home")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widget.attrs = {"placeholder": "Current password"}
+        form.fields["new_password1"].widget.attrs = {"placeholder": "New password"}
+        form.fields["new_password2"].widget.attrs = {
+            "placeholder": "Confirm new password"
+        }
+        return form
+
+        def get_success_url(self):
+            return self.request.user.get_absolute_url()

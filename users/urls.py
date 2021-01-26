@@ -12,4 +12,6 @@ urlpatterns = [
     path("login/kakao/callback/", views.kakao_callback, name="kakao-callback"),
     path("logout/", views.log_out, name="logout"),
     path("profile/<int:pk>/", views.ProfileView.as_view(), name="profile"),
+    path("update-profile/", views.UpdateProfileView.as_view(), name="update"),
+    path("update-password/", views.UpdatePasswordView.as_view(), name="password"),
 ]
