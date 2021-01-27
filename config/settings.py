@@ -42,6 +42,8 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     "users.apps.UsersConfig",
     "movies.apps.MoviesConfig",
+    "reviews.apps.ReviewsConfig",
+    "django.forms",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
@@ -138,6 +140,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
 MEDIA_URL = "/media/"
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
 
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)

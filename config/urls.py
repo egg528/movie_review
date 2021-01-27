@@ -24,6 +24,7 @@ urlpatterns = [
     path("", include("core.urls", namespace="core")),
     path("movies/", include("movies.urls", namespace="movies")),
     path("users/", include("users.urls", namespace="users")),
+    path("reviews/", include("reviews.urls", namespace="reviews")),
 ]
 
 if settings.DEBUG:

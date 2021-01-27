@@ -18,3 +18,13 @@ class Movie(models.Model):
 
     class Meta:
         ordering = ("-year",)
+
+    def total_rating(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.star
+        if len(all_reviews) == 0:
+            return 0
+
+        return round(all_ratings / len(all_reviews), 2)

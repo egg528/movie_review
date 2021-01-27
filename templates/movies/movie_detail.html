@@ -5,7 +5,7 @@
 {% endblock page_title %}
 
 {% block content %}
-    <div class=" container flex mx-auto justify-between ">
+    <div class=" container flex mx-auto justify-between pb-12 border-b ">
         <div class="flex justify-center">
             <div class="w-6/12 flex flex-col">
                 <span class="flex font-extrabold text-5xl">{{movie.title}}</span>
@@ -21,6 +21,43 @@
             </div>
             <div class="w-64"></div>
             <div style="background-image:url({{movie.poster}})" class="float-right w-64 h-96 bg-cover bg-center rounded-lg"></div>
+        </div>
+    </div>
+    <div class="container flex mx-80 justify-between">
+        <div class="mt-10">
+                <h4 class="font-medium text-2xl mb-5">Reviews</h4>
+                <div class="flex items-center">
+                    <div>
+                        <i class="fas fa-star text-teal-500"></i>
+                        <span class="font-bold text-xl">{{movie.total_rating}}</span>
+                    </div>
+                    <div class="h-4 w-px bg-gray-400 mx-5"></div>
+                    <div>
+                        <span class="font-bold text-xl">{{movie.reviews.count}}</span>
+                        <span>review{{movie.reviews.count|pluralize}}</span>
+                    </div>
+                </div>
+                <div class="mt-10">
+                    {% for review in movie.reviews.all  %}
+                        <div class="border-section">
+                            <div class="mb-3 flex">
+                                <div>
+                                    {% include "partials/user_avatar.html" with user_obj=review.user h_and_w='w-10 h-10' text='text-xl' %}
+                                </div>
+                                <div class="flex flex-col ml-5">
+                                    <span class="font-medium">{{review.user.last_name}}</span>
+                                    <div>
+                                        <i class="fas fa-star text-teal-500"></i>
+                                        <span class="font-bold">{{movie.total_rating}}</span>
+                                    </div>
+                                    <span class="text-sm text-gray-500">{{review.created|date:'F Y'}}</span>
+                                </div>
+                            </div>
+                            <p>{{review.comment}}</p>
+                        </div>
+                    {% endfor %}    
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -31,7 +31,7 @@ class LoggedInOnlyView(LoginRequiredMixin):
     login_url = reverse_lazy("users:login")
 
     def dispatch(self, request, *args, **kwargs):
-        messages.error(self.request, _("Can't go there"))
         if not request.user.is_authenticated:
+            messages.error(self.request, _("Can't go there"))
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
