@@ -1,15 +1,22 @@
 {% extends "base.html" %}
+{% load on_favs %}
 
 {% block page_title %}
     {{movie.title}}
 {% endblock page_title %}
 
 {% block content %}
-    <div class=" container flex mx-auto justify-between pb-12 border-b ">
-        <div class="flex justify-center">
+    <div class="container flex mx-auto justify-between pb-12 border-b">
+            <div class="w-20"></div>
             <div class="w-6/12 flex flex-col">
                 <span class="flex font-extrabold text-5xl">{{movie.title}}</span>
                 <span class="mt-5 font-extrabold text-2xl">({{movie.year}})</span>
+                {% on_favs movie as on_favs_boolean%}
+                {% if on_favs_boolean is None %}
+                    <a class="block mt-3 w-1/2 text-teal-600 font-bold" href="{% url 'lists:toggle-movie' movie.pk %}?action=add">Save to Favourites</a>
+                {% else %}
+                    <a class="block mt-3 w-1/2 text-teal-600 font-bold" href="{% url 'lists:toggle-movie' movie.pk %}?action=remove">Remove from Favourites</a>
+                {% endif %}
                 <div class="flex flex-col mt-10">
                     <span class="font-extrabold text-xl">Summary </span>
                     {% if movie.summary == "" %}
@@ -21,10 +28,9 @@
             </div>
             <div class="w-64"></div>
             <div style="background-image:url({{movie.poster}})" class="float-right w-64 h-96 bg-cover bg-center rounded-lg"></div>
-        </div>
     </div>
-    <div class="container flex mx-80 justify-between">
-        <div class="mt-10">
+    <div class="flex justify-center mx-80 ">
+        <div class="mt-10 w-10/12">
                 <h4 class="font-medium text-2xl mb-5">Reviews</h4>
                 <div class="flex items-center">
                     <div>
@@ -37,9 +43,9 @@
                         <span>review{{movie.reviews.count|pluralize}}</span>
                     </div>
                 </div>
-                <div class="mt-10">
+                <div class="mt-10 w-full">
                     {% for review in movie.reviews.all  %}
-                        <div class="border-section">
+                        <div class="border-section w-full">
                             <div class="mb-3 flex">
                                 <div>
                                     {% include "partials/user_avatar.html" with user_obj=review.user h_and_w='w-10 h-10' text='text-xl' %}
@@ -48,16 +54,34 @@
                                     <span class="font-medium">{{review.user.last_name}}</span>
                                     <div>
                                         <i class="fas fa-star text-teal-500"></i>
-                                        <span class="font-bold">{{movie.total_rating}}</span>
+                                        <span class="font-bold">{{review.star}}</span>
                                     </div>
                                     <span class="text-sm text-gray-500">{{review.created|date:'F Y'}}</span>
                                 </div>
                             </div>
                             <p>{{review.comment}}</p>
                         </div>
-                    {% endfor %}    
+                    {% endfor %}
                 </div>
             </div>
         </div>
+        {% if user.is_authenticated %}
+        <div class="flex justify-center mx-80 ">
+            <div class="flex w-10/12 mt-10 mb-10">
+                <div class="flex items-center">
+                    <div class="h-20 w-20 bg-gray-700 rounded-full text-white flex justify-center items-center overflow-hidden">
+                        <span class="text-5xl font-bold">{{user.first_name|first}}</span>
+                    </div>
+                </div>
+                    <form class="flex  items-end w-full" action="{% url 'reviews:create' movie.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="ml-3 w-full">{{form.comment}}</div>
+                        <div class="ml-3 ">{{form.star}}</div>
+                        <button class="ml-2 btn bg-gray-600 rounded-md w-10 h-10"></button>
+                        <div class="h-6"></div>
+                    </form>
+            </div>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}
