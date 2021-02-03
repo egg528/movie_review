@@ -26,6 +26,7 @@ urlpatterns = [
     path("users/", include("users.urls", namespace="users")),
     path("reviews/", include("reviews.urls", namespace="reviews")),
     path("lists/", include("lists.urls", namespace="lists")),
+    path("discussions/", include("discussions.urls", namespace="discussions")),
 ]
 
 if settings.DEBUG:

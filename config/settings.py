@@ -45,6 +45,7 @@ PROJECT_APPS = [
     "reviews.apps.ReviewsConfig",
     "django.forms",
     "lists.apps.ListsConfig",
+    "discussions.apps.DiscussionsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS

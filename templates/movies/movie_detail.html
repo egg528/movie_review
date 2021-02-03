@@ -11,11 +11,13 @@
             <div class="w-6/12 flex flex-col">
                 <span class="flex font-extrabold text-5xl">{{movie.title}}</span>
                 <span class="mt-5 font-extrabold text-2xl">({{movie.year}})</span>
+                {% if user.is_authenticated %}
                 {% on_favs movie as on_favs_boolean%}
                 {% if on_favs_boolean is None %}
                     <a class="block mt-3 w-1/2 text-teal-600 font-bold" href="{% url 'lists:toggle-movie' movie.pk %}?action=add">Save to Favourites</a>
                 {% else %}
                     <a class="block mt-3 w-1/2 text-teal-600 font-bold" href="{% url 'lists:toggle-movie' movie.pk %}?action=remove">Remove from Favourites</a>
+                {% endif %}
                 {% endif %}
                 <div class="flex flex-col mt-10">
                     <span class="font-extrabold text-xl">Summary </span>
@@ -29,6 +31,30 @@
             <div class="w-64"></div>
             <div style="background-image:url({{movie.poster}})" class="float-right w-64 h-96 bg-cover bg-center rounded-lg"></div>
     </div>
+
+
+    <div class="flex justify-center mx-96">
+        <div class="mt-10 w-full">
+            <a href="{% url 'discussions:create' movie.pk %}" class="block bg-gray-400 w-24 rounded-lg text-center font-bold">Create Discussion</a>
+            <div class="mt-3"></div>
+            <div class="flex flex-col items-center">
+            {% for dis in movie.discussions.all %}
+            <div  class="block font-bold w-8/12 h-24 text-center rounded-2xl mt-3 bg-blue-300 align-middle"  style="display: table;">
+                <span class="w-full" style="display: table-cell; vertical-align: middle;"><a  href="{% url 'discussions:go' dis.pk %}">{{dis.topic}}</a></span>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+
+
+        <div class=" h-20"></div>
+
+    </div>
+
+    <div class="container flex mx-auto justify-between pb-12 border-b"></div>
+
+
+
     <div class="flex justify-center mx-80 ">
         <div class="mt-10 w-10/12">
                 <h4 class="font-medium text-2xl mb-5">Reviews</h4>
