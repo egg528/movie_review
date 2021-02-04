@@ -9,8 +9,17 @@
 
 {% block content %}
 
-    <div class="flex justify-center">
+    <div class="flex justify-between">
+        <span></span>
+        {% if user not in discussion.participants.all %}
+        <div class="mt-14 block bg-gray-400 w-24 rounded-lg text-center font-bold" style="display: table">
+        <a href="{% url 'discussions:participate' discussion.pk %}" style="display: tabel-cell; vertical-align: middle;">Join</a>
+        </div>
+        {% else%}
+        <div></div>
+        {% endif %}
         <h2 class="mt-10 font-bold text-4xl text-">{{discussion.topic}}</h2>
+        <span></span>
         <span></span>
     </div>
      
@@ -41,11 +50,13 @@
                 {% endif %}
                 
             </div>
+            {% if user in discussion.participants.all %}
             <form class="mt-10 w-1/2 mx-auto" method="POST">
                 {% csrf_token %}
                 <input class="border-box mb-5" name="message" placeholder="Write a Message" required />
                 <button class="btn-link bg-green-400">Send Comment</button>
             </form>
+            {% endif %}
         </div>
 
     </div>

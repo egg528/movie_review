@@ -59,3 +59,11 @@ class CreateDiscussionView(FormView):
         return redirect(
             reverse("movies:movie-detail", kwargs={"pk": discussion.movie.pk})
         )
+
+
+def participate(request, pk):
+
+    discussion = models.Discussion.objects.get_or_none(pk=pk)
+    discussion.participants.add(request.user)
+
+    return redirect(reverse("discussions:detail", kwargs={"pk": pk}))

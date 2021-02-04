@@ -39,7 +39,7 @@
             <div class="mt-3"></div>
             <div class="flex flex-col items-center">
             {% for dis in movie.discussions.all %}
-            <div  class="block font-bold w-8/12 h-24 text-center rounded-2xl mt-3 bg-blue-300 align-middle"  style="display: table;">
+            <div  class="block font-bold w-7/12 h-14 text-center rounded-2xl mt-3 bg-blue-300 align-middle"  style="display: table;">
                 <span class="w-full" style="display: table-cell; vertical-align: middle;"><a  href="{% url 'discussions:go' dis.pk %}">{{dis.topic}}</a></span>
             </div>
             {% endfor %}
